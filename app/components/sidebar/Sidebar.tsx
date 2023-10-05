@@ -1,20 +1,35 @@
 "use client";
 
+import { MenuElement } from "@/app/common/types";
+import Link from "next/link";
+import { AiOutlineDollar, AiOutlineHome } from "react-icons/ai";
+import { BsBoxSeamFill } from "react-icons/bs";
+import { BiSolidPlaneAlt} from "react-icons/bi";
+import { FcShop } from "react-icons/fc";
+import { usePathname } from 'next/navigation';
+
 interface SidebarProps {
   children: React.ReactNode;
 }
 
 const Siderbar: React.FC<SidebarProps> = ({ children }) => {
-  const Menus = [
-    { title: "Dashboard", src: "Chart_fill" },
-    { title: "Inbox", src: "Chat" },
-    { title: "Accounts", src: "User", gap: true },
-    { title: "Schedule ", src: "Calendar" },
-    { title: "Search", src: "Search" },
-    { title: "Analytics", src: "Chart" },
-    { title: "Files ", src: "Folder", gap: true },
-    { title: "Setting", src: "Setting" },
+  const pathname = usePathname();
+
+  const menuElements: MenuElement[] = [
+    { title: "Inicio", path: '/', icon: AiOutlineHome, gap: true },
+    { title: "Pedidos", path: '/orders/1', icon: BiSolidPlaneAlt },
+    { title: "Ventas", path: '', icon: AiOutlineDollar },
+    { title: "Productos", path: '', icon: BsBoxSeamFill },
   ];
+
+  const renderIcon = (icon: any, index: number) => {
+    const Icon = icon;
+    return (
+      <div key={index}>
+        <Icon />
+      </div>
+    );
+  };
 
   return (
     <div className="flex">
@@ -36,39 +51,56 @@ const Siderbar: React.FC<SidebarProps> = ({ children }) => {
             gap-x-4 
             items-center"
         >
-          <img
-            src="/images/logo.png"
-            className={"cursor-pointer duration-500"}
-          />
+          <div className="text-2xl">
+          <FcShop />
+          </div>
           <h1
             className="
-              text-white 
               origin-left 
-              font-medium 
-              text-xl 
+              font-bold
               duration-200 
-              scale-0"
+              text-green-500
+              text-xl
+              select-none"
           >
-            Designer
+            Business Manager
           </h1>
         </div>
         <ul className="pt-6">
-          {Menus.map((Menu, index) => (
-            <li
+          { menuElements.map((element, index) => (
+            <Link 
+              href={element.path} 
               key={index}
-              className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
-                Menu.gap ? "mt-9" : "mt-2"
-              } ${index === 0 && "bg-light-white"} `}
             >
-              <img src={`/images/${Menu.src}.png`} />
-              <span className="origin-left duration-200">{Menu.title}</span>
-            </li>
+              <li
+                className={`
+                  flex 
+                  items-center 
+                  rounded-md  
+                  p-2 
+                  cursor-pointer 
+                  gap-x-4 
+                  select-none 
+                  border-2 
+                  hover:bg-zinc-200 
+                  hover:text-green-500 
+                  ${ element.gap ? "mt-9" : "mt-2" } 
+                  ${ index === 0 && "bg-white" } 
+                  ${ pathname == element.path ? "bg-zinc-200 text-green-500 border-green-500" : "border-white"}
+                  `}
+              >
+                <div className="text-xl duration-200">
+                  { renderIcon(element.icon, index) }
+                </div>
+                <span className="origin-left duration-200 text-xl">{ element.title }</span>
+              </li>
+            </Link>
           ))}
         </ul>
       </div>
       <div className="flex-1 p-7 bg-zinc-50">
         <h1 className="text-2xl font-semibold ">Home Page</h1>
-        <div>{children}</div>
+        <div>{ children }</div>
       </div>
     </div>
   );
