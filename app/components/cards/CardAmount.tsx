@@ -25,27 +25,38 @@ const CardAmount: React.FC<cardAmountInterface> = ({
         shadow-lg
         rounded-md 
         bg-white
-        px-4 
-        py-5"
+        px-3 
+        py-4"
     >
       <div
-        className={iconBackgroundColor}
+        className={`
+          inline-flex
+          p-1
+          rounded
+          ${iconBackgroundColor}
+        `}
       >
         <Icon
-          className={iconColor}
+          className={`
+            inline-table
+            ${iconColor}
+          `}
           size={24}
         />
       </div>
       <div
         className="
-          text-sm
+          text-xs
+          text-stone-700
+          mt-3
         "
       >
         {title}
       </div>
       <div
         className="
-          text-lg
+          text-xl
+          font-semibold
         "
       >
         { amountType === AmountType.Money ? "$" : "%" }

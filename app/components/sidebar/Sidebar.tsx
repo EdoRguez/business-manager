@@ -35,7 +35,7 @@ const Siderbar: React.FC<SidebarProps> = ({ children }) => {
     <div className="flex">
       <div
         className="
-          w-72 
+          w-55 
           bg-dark-purple 
           h-screen 
           p-5  

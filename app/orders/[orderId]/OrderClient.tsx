@@ -9,9 +9,15 @@ import { AmountType } from "@/app/common/enums";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { FaPlaneDeparture } from "react-icons/fa";
 import { BiSolidBadgeDollar } from "react-icons/bi";
-import { IoIosMan, IoIosWoman } from "react-icons/io";
+import { IoIosMan, IoIosWoman, IoMdAddCircle } from "react-icons/io";
+import Button from "@/app/components/Button";
+import ModalAddProductOrder from "@/app/components/modals/ModalAddProductOrder";
+import { useState } from "react";
+import useModalAddProductOrder from "@/app/hooks/useModalAddProductOrder";
 
 const OrderClient = () => {
+  const modalAddProductOrder = useModalAddProductOrder();
+
   const tableColumns: any[] = [
     {
       title: "Imagen",
@@ -77,85 +83,98 @@ const OrderClient = () => {
   ];
 
   return (
-    <div
-      className="
-        grid
-        grid-cols-1
-        sm:grid-cols-4 
-        2xl:grid-cols-6
-        gap-4
+    <div>
+      <ModalAddProductOrder />
+
+      <div
+        className="
+          grid
+          grid-cols-1
+          2xl:grid-cols-7
+          gap-4
       "
-    >
-      <div className="col-start-1 col-span-4">
-        <TableImage columns={tableColumns} data={tableData} />
-      </div>
-      <div className="col-start-5 col-span-2">
-        <div
-          className="
-              grid
-              grid-cols-1
-              sm:grid-cols-2 
-              gap-2
-            "
-        >
-          <CardAmount
-            icon={BsBoxSeamFill}
-            iconColor="text-blue-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Gastos Ropa"
-            amount={100}
-            amountType={AmountType.Money}
-          />
-          <CardAmount
-            icon={FaPlaneDeparture}
-            iconColor="text-red-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Gastos Envío"
-            amount={20}
-            amountType={AmountType.Money}
-          />
-          <CardAmount
-            icon={GiPayMoney}
-            iconColor="text-red-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Gastos Ropa + Envío"
-            amount={120}
-            amountType={AmountType.Money}
-          />
-          <CardAmount
-            icon={GiReceiveMoney}
-            iconColor="text-red-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Total a Vender"
-            amount={220}
-            amountType={AmountType.Money}
-          />
-          <div className="col-start-1 col-span-2">
+      >
+
+        <div className="2xl:col-start-1 2xl:col-span-5">
+          <div className="flex justify-end mb-3">
+            <div className="w-56">
+              <Button
+                label="Agregar Producto"
+                icon={IoMdAddCircle}
+                onClick={modalAddProductOrder.onOpen}
+              />
+            </div>
+          </div>
+          <TableImage columns={tableColumns} data={tableData} />
+        </div>
+
+        <div className="2xl:col-start-6 2xl:col-span-2">
+          <div
+            className="
+                grid
+                grid-cols-2
+                gap-2
+              "
+          >
             <CardAmount
-              icon={BiSolidBadgeDollar}
-              iconColor="text-red-800"
-              iconBackgroundColor="bg-blue-300"
-              title="Ganancias Totales"
+              icon={BsBoxSeamFill}
+              iconColor="text-stone-900"
+              iconBackgroundColor="bg-stone-200"
+              title="Gastos Ropa"
               amount={100}
               amountType={AmountType.Money}
             />
+            <CardAmount
+              icon={FaPlaneDeparture}
+              iconColor="text-stone-900"
+              iconBackgroundColor="bg-stone-200"
+              title="Gastos Envío"
+              amount={20}
+              amountType={AmountType.Money}
+            />
+            <CardAmount
+              icon={GiPayMoney}
+              iconColor="text-rose-900"
+              iconBackgroundColor="bg-rose-200"
+              title="Gastos Ropa + Envío"
+              amount={120}
+              amountType={AmountType.Money}
+            />
+            <CardAmount
+              icon={GiReceiveMoney}
+              iconColor="text-green-900"
+              iconBackgroundColor="bg-green-200"
+              title="Total a Vender"
+              amount={220}
+              amountType={AmountType.Money}
+            />
+            <div className="col-start-1 col-span-2">
+              <CardAmount
+                icon={BiSolidBadgeDollar}
+                iconColor="text-yellow-600"
+                iconBackgroundColor="bg-yellow-100"
+                title="Ganancias Totales"
+                amount={100}
+                amountType={AmountType.Money}
+              />
+            </div>
+            <CardAmount
+              icon={IoIosMan}
+              iconColor="text-sky-900"
+              iconBackgroundColor="bg-sky-200"
+              title="Ganancias Eduardo"
+              amount={30}
+              amountType={AmountType.Money}
+            />
+            <CardAmount
+              icon={IoIosWoman}
+              iconColor="text-fuchsia-900"
+              iconBackgroundColor="bg-fuchsia-200"
+              title="Ganancias Daniela"
+              amount={70}
+              amountType={AmountType.Money}
+            />
           </div>
-          <CardAmount
-            icon={IoIosMan}
-            iconColor="text-red-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Ganancias Eduardo"
-            amount={30}
-            amountType={AmountType.Money}
-          />
-          <CardAmount
-            icon={IoIosWoman}
-            iconColor="text-red-800"
-            iconBackgroundColor="bg-blue-300"
-            title="Ganancias Daniela"
-            amount={70}
-            amountType={AmountType.Money}
-          />
         </div>
       </div>
     </div>
