@@ -84,7 +84,7 @@ const OrderClient = () => {
 
   return (
     <div>
-      <ModalAddProductOrder />
+      <ModalAddProductOrder title="Agregar Producto"/>
 
       <div
         className="
