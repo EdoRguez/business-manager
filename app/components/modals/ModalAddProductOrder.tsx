@@ -2,7 +2,7 @@
 
 import useModalAddProductOrder from "@/app/hooks/useModalAddProductOrder";
 import { Button, Input, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface modalProps {
   title: string;
@@ -25,23 +25,40 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
     quantity: undefined,
     sell: undefined,
   });
+  const numberFields: string[] = ['cost', 'quantity', 'sell'];
+
+  useEffect(() => {
+    setLoading(false);
+    setFormData({
+      productName: undefined,
+      cost: undefined,
+      quantity: undefined,
+      sell: undefined,
+    })
+  }, [modalAddProductOrder.isOpen]);
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+
+    let inputValue: string = value;
+    if(numberFields.includes(name)) {
+      inputValue = value.replace(/\D/g, '');
+    }
+
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: inputValue }));
   };
 
   const handleSubmit = () => {
     setLoading(true);
 
-    setErrors(validateValues());
+    const formErrors = validateValues();
+    setErrors(formErrors);
 
-    if(!errors) {
+    if(Object.keys(formErrors).length === 0) {
       modalAddProductOrder.onClose();
     } else {
       setLoading(false);
     }
-
   };
 
   const handleCancel = () => {
@@ -49,25 +66,25 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
   };
 
   const validateValues = () => {
-    let errors: any = {};
+    let formErrors: any = {};
 
     if (!formData.productName || formData.productName.length > 15) {
-      errors.productName = "Producto es requerido";
+      formErrors.productName = "Producto es requerido";
     }
 
     if (!formData.cost || formData.cost <= 0 || formData.cost >= 999) {
-      errors.cost = "Costo es requerido y entre 1$ - 999$";
+      formErrors.cost = "Costo es requerido y entre 1$ - 999$";
     }
 
     if (!formData.quantity || formData.quantity <= 0 || formData.quantity >= 999) {
-      errors.quantity = "Cantidad es requerida y entre 1 - 999";
+      formErrors.quantity = "Cantidad es requerida y entre 1 - 999";
     }
 
     if (!formData.sell || formData.sell <= 0 || formData.sell >= 999) {
-      errors.sell = "Venta es requerido y entre 1$ - 999$";
+      formErrors.sell = "Venta es requerido y entre 1$ - 999$";
     }
 
-    return errors;
+    return formErrors;
   }
 
   return (
@@ -97,7 +114,7 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
             border-[1px]
           "
         >
-          Search on Google
+          Guardar Producto
         </Button>,
       ]}
     >
@@ -106,7 +123,6 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
           <label>Nombre Producto:</label>
           <Input
             status={errors.productName ? 'error' : ''}
-            placeholder="Basic usage"
             name="productName"
             maxLength={15}
             value={formData.productName}
@@ -118,8 +134,7 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
           <div className="mr-1">
             <label>Costo c/u:</label>
             <Input
-            status={errors.cost ? 'error' : ''}
-              placeholder="Basic usage"
+              status={errors.cost ? 'error' : ''}
               name="cost"
               maxLength={3}
               value={formData.cost}
@@ -130,7 +145,6 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
             <label>Cantidad:</label>
             <Input
               status={errors.quantity ? 'error' : ''}
-              placeholder="Basic usage"
               name="quantity"
               maxLength={3}
               value={formData.quantity}
@@ -142,9 +156,9 @@ const ModalAddProductOrder: React.FC<modalProps> = ({ title }) => {
         <div className="mt-3">
           <label>Venta Individual:</label>
           <Input
-          status={errors.sell ? 'error' : ''}
-            placeholder="Basic usage"
+            status={errors.sell ? 'error' : ''}
             name="sell"
+            maxLength={3}
             value={formData.sell}
             onChange={handleChange}
           />

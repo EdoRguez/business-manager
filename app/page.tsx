@@ -3,6 +3,9 @@
 import Card from "./components/cards/Card";
 
 export default function Home() {
+
+  const dummyData: number[] = Array.from(Array(7).keys());
+
   return (
     <div>
       <div
@@ -15,33 +18,14 @@ export default function Home() {
             gap-8
           "
       >
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
-
-        <div>
-          <Card />
-        </div>
+        {
+          dummyData.map((x: number) =>  (
+            <div key={x}>
+                <Card />
+              </div>
+            )
+          )
+        }
       </div>
     </div>
   );
